@@ -10,6 +10,10 @@ export class BinanceProxy {
     return this.publicCall('/v3/time');
   }
 
+  async exchangeInfo(): Promise<any> {
+    return this.publicCall('/v3/exchangeInfo');
+  }
+
   async depth(symbol = 'BTCBRL', limit = 5): Promise<DepthResponse> {
     return this.publicCall<DepthResponse>('/v3/depth', { symbol, limit });
   }
@@ -17,6 +21,11 @@ export class BinanceProxy {
   async newOrder(data: NewOrderRequest): Promise<NewOrderResponse> {
     if (data.type === 'LIMIT') data.timeInForce = 'GTC'; // Good till cancel unexpired
     return this.privateCall<NewOrderResponse>('/v3/order', data, 'POST');
+  }
+
+  async newOrderTest(data: NewOrderRequest): Promise<NewOrderResponse> {
+    if (data.type === 'LIMIT') data.timeInForce = 'GTC'; // Good till cancel unexpired
+    return this.privateCall<NewOrderResponse>('/v3/order/test', data, 'POST');
   }
 
   async accountInfo(): Promise<AccountInfoResponse> {
