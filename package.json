@@ -1,10 +1,10 @@
 {
-  "name": "mojo",
+  "name": "judi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev src/server.ts --respawn",
+    "dev": "ts-node-dev src/index.ts --respawn",
     "debug": "npm run dev -- --inspect",
     "lint": "eslint \"src/**\" --fix && prettier \"src/**\" --write",
     "build": "tsc",
@@ -15,7 +15,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
