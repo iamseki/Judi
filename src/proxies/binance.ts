@@ -1,7 +1,7 @@
 import axios, { Method } from 'axios';
 import querystring from 'querystring';
 import crypto from 'crypto';
-import { AccountInfoResponse, DepthResponse, NewOrderRequest, NewOrderResponse } from './dtos/binance';
+import { AccountInfoResponse, DepthResponse, NewOrderRequest, NewOrderResponse } from './binance-dtos';
 
 export class BinanceProxy {
   constructor(private readonly apiKey: string, private readonly apiSecret: string, private readonly apiUrl: string) {}
@@ -50,7 +50,7 @@ export class BinanceProxy {
       });
       return result.data;
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
     }
   }
   private async publicCall<T>(path: string, data = {}, method = 'GET'): Promise<T> {
