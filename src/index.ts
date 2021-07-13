@@ -1,8 +1,9 @@
 import { BinanceProxy } from './proxies';
 import { AccountInfo, Order } from './usecases';
+import { JudiEvent, JudiEvents, JudiInitialState } from './models';
 import WebSocket from 'ws';
 import prompts from 'prompts';
-import { InitialState, JudiStateMachine } from './mmi/judi';
+import { JudiStateMachine } from './mmi/judi';
 
 console.log(`NODE_ENV:${process.env.NODE_ENV}`);
 
@@ -22,21 +23,6 @@ let currencyAmount;
 
 let buy = false;
 let sell = false;
-/**
-setInterval(() => {
-  console.log(`variables status: buy = ${buy} sell = ${sell}`);
-  if (buy && sell) {
-    const status = {
-      date: new Date().toString(),
-      buy,
-      sell,
-    };
-    fs.writeFileSync('status.json', JSON.stringify(status));
-
-    process.exit();
-  }
-}, 4500);
- */
 
 const Judi = async (BTCPrice: number) => {
   if (BTCPrice <= 33500 && !buy) {
@@ -89,14 +75,23 @@ const WS = async () => {
     name: 'state',
     message: 'Pick a initial state for Judi',
     choices: [
-      { title: 'Account Ballance', description: 'Prints your account balance', value: InitialState.AccountBalance },
-      { title: 'Buy', description: 'Buy flow of Judi machine state', value: InitialState.Buy },
-      { title: 'Sell', description: 'Sell flow of Judi machine state', value: InitialState.Sell },
-      { title: 'Operates my money', description: 'Judi default flow to operates your money', value: InitialState.Judi },
+      { title: 'Account Ballance', description: 'Prints your account balance', value: JudiInitialState.AccountBalance },
+      { title: 'Buy', description: 'Buy flow of Judi machine state', value: JudiInitialState.Buy },
+      { title: 'Sell', description: 'Sell flow of Judi machine state', value: JudiInitialState.Sell },
+      {
+        title: 'Operates my money',
+        description: 'Judi default flow to operates your money',
+        value: JudiInitialState.Judi,
+      },
     ],
     initial: 3,
   });
 
   const judi = new JudiStateMachine(response.state, binanceProxy);
-  const judiState = await judi.start();
+
+  judi.on(JudiEvents.Successed, (event: JudiEvent) => {
+    console.log(event);
+  });
+
+  await judi.start();
 })();
