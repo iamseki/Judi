@@ -1,4 +1,4 @@
-import { BinanceProxy } from '../proxies';
+import { BinanceProxy, BalanceInfo } from '../proxies';
 
 export class AccountInfo {
   constructor(private readonly proxy: BinanceProxy) {}
@@ -9,7 +9,8 @@ export class AccountInfo {
     return Number(free);
   }
 
-  async retrieve(): Promise<any> {
-    return this.proxy.accountInfo();
+  async balance(): Promise<BalanceInfo[]> {
+    const { balances } = await this.proxy.accountInfo();
+    return balances.filter((b) => Number(b.free) > 0);
   }
 }

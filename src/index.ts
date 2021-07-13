@@ -1,7 +1,8 @@
 import { BinanceProxy } from './proxies';
-import fs from 'fs';
 import { AccountInfo, Order } from './usecases';
 import WebSocket from 'ws';
+import prompts from 'prompts';
+import { InitialState, JudiStateMachine } from './mmi/judi';
 
 console.log(`NODE_ENV:${process.env.NODE_ENV}`);
 
@@ -21,7 +22,7 @@ let currencyAmount;
 
 let buy = false;
 let sell = false;
-
+/**
 setInterval(() => {
   console.log(`variables status: buy = ${buy} sell = ${sell}`);
   if (buy && sell) {
@@ -35,6 +36,7 @@ setInterval(() => {
     process.exit();
   }
 }, 4500);
+ */
 
 const Judi = async (BTCPrice: number) => {
   if (BTCPrice <= 33500 && !buy) {
@@ -48,7 +50,7 @@ const Judi = async (BTCPrice: number) => {
     `);
     const orderResult = await order.buy(symbol, quantity);
     console.log(`buy order status: ${orderResult.status}`);
-    console.log(await accountInfo.retrieve());
+    console.log(await accountInfo.balance());
   } else if (BTCPrice >= 35000 && buy) {
     if (!sell) {
       const orderResult = await order.sell(symbol, quantity);
@@ -79,4 +81,22 @@ const WS = async () => {
 //Promise.all([WS(),Judi()]);
 
 //Judi();
-WS();
+//WS();
+
+(async () => {
+  const response = await prompts({
+    type: 'select',
+    name: 'state',
+    message: 'Pick a initial state for Judi',
+    choices: [
+      { title: 'Account Ballance', description: 'Prints your account balance', value: InitialState.AccountBalance },
+      { title: 'Buy', description: 'Buy flow of Judi machine state', value: InitialState.Buy },
+      { title: 'Sell', description: 'Sell flow of Judi machine state', value: InitialState.Sell },
+      { title: 'Operates my money', description: 'Judi default flow to operates your money', value: InitialState.Judi },
+    ],
+    initial: 3,
+  });
+
+  const judi = new JudiStateMachine(response.state, binanceProxy);
+  const judiState = await judi.start();
+})();

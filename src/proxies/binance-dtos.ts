@@ -43,7 +43,7 @@ export interface AccountInfoResponse {
   balances: BalanceInfo[];
 }
 
-interface BalanceInfo {
+export interface BalanceInfo {
   asset: string;
   free: string;
   locked: string;
