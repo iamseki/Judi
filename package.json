@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "chalk": "^4.1.1",
     "prompts": "^2.4.1",
     "ws": "^7.5.3"
   },

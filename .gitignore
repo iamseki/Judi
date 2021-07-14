@@ -3,3 +3,4 @@ node_modules
 init.sh
 init.bat
 coverage
+result.json

@@ -11,7 +11,10 @@ export enum JudiState {
   AccountBalanceFailed = 'account-balance-failed',
   ListeningMarket = 'listening-market',
   HandleBuy = 'handle-buy',
+  HandleBuySuccess = 'handle-buy-success',
   HandleSell = 'handle-sell',
+  HandleSellSuccess = 'handle-sell-success',
+  ProcessingOrder = 'processing-order',
 }
 
 export enum JudiEvents {
