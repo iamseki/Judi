@@ -1,13 +1,17 @@
 import axios, { Method } from 'axios';
 import querystring from 'querystring';
 import crypto from 'crypto';
-import { AccountInfoResponse, DepthResponse, NewOrderRequest, NewOrderResponse } from './dtos/binance';
+import { AccountInfoResponse, DepthResponse, NewOrderRequest, NewOrderResponse } from './binance-dtos';
 
 export class BinanceProxy {
   constructor(private readonly apiKey: string, private readonly apiSecret: string, private readonly apiUrl: string) {}
 
   async serverTime(): Promise<{ serverTime: number }> {
     return this.publicCall('/v3/time');
+  }
+
+  async exchangeInfo(): Promise<any> {
+    return this.publicCall('/v3/exchangeInfo');
   }
 
   async depth(symbol = 'BTCBRL', limit = 5): Promise<DepthResponse> {
@@ -17,6 +21,11 @@ export class BinanceProxy {
   async newOrder(data: NewOrderRequest): Promise<NewOrderResponse> {
     if (data.type === 'LIMIT') data.timeInForce = 'GTC'; // Good till cancel unexpired
     return this.privateCall<NewOrderResponse>('/v3/order', data, 'POST');
+  }
+
+  async newOrderTest(data: NewOrderRequest): Promise<NewOrderResponse> {
+    if (data.type === 'LIMIT') data.timeInForce = 'GTC'; // Good till cancel unexpired
+    return this.privateCall<NewOrderResponse>('/v3/order/test', data, 'POST');
   }
 
   async accountInfo(): Promise<AccountInfoResponse> {
@@ -41,7 +50,7 @@ export class BinanceProxy {
       });
       return result.data;
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
     }
   }
   private async publicCall<T>(path: string, data = {}, method = 'GET'): Promise<T> {
