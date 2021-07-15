@@ -1,41 +1,29 @@
-import { BinanceProxy } from './proxies';
-import { JudiEvent, JudiEvents, JudiInitialState } from './models';
-import prompts from 'prompts';
-import { JudiStateMachine } from './mmi/judi';
 import fs from 'fs';
 import chalk from 'chalk';
 
+import { JudiEvent, JudiEvents } from './models/judi';
+import { JudiStateMachine } from './mmi/judi';
+import { askInitialState } from './mmi/user';
+import { AccountInfo } from './usecases/account-info';
+import { Order } from './usecases';
+import { Factory } from './factory';
+
 console.log(chalk.bgCyanBright.bold(`NODE_ENV:${process.env.NODE_ENV}`));
 
-const apiKey = process.env.NODE_ENV === 'DEV' ? process.env.DEV_API_KEY : process.env.PROD_API_KEY;
-const apiSecret = process.env.NODE_ENV === 'DEV' ? process.env.DEV_SECRET_KEY : process.env.PROD_SECRET_KEY;
-const apiUrl = process.env.NODE_ENV === 'DEV' ? `${process.env.DEV_API_URL}` : `${process.env.PROD_API_URL}`;
-
-const binanceProxy = new BinanceProxy(apiKey, apiSecret, apiUrl);
+const binanceProxy = Factory.Proxy();
+const binanceListener = Factory.MarketListener();
+const accountInfo = new AccountInfo(binanceProxy);
+const order = new Order(binanceProxy);
 
 (async () => {
-  const response = await prompts({
-    type: 'select',
-    name: 'state',
-    message: 'Pick a initial state for Judi',
-    choices: [
-      { title: 'Account Ballance', description: 'Prints your account balance', value: JudiInitialState.AccountBalance },
-      { title: 'Buy', description: 'Buy flow of Judi machine state', value: JudiInitialState.Buy },
-      { title: 'Sell', description: 'Sell flow of Judi machine state', value: JudiInitialState.Sell },
-      {
-        title: 'Operates my money',
-        description: 'Judi default flow to operates your money',
-        value: JudiInitialState.Judi,
-      },
-    ],
-    initial: 3,
-  });
+  const initialState = await askInitialState();
 
-  const judi = new JudiStateMachine(response.state, binanceProxy);
+  const judi = new JudiStateMachine(initialState, accountInfo, order, binanceListener);
 
   judi.on(JudiEvents.Successed, (event: JudiEvent) => {
+    const loggingFile = process.env.NODE_ENV === 'DEV' ? 'result-dev.json' : 'result.json';
     fs.appendFileSync(
-      'result.json',
+      loggingFile,
       JSON.stringify(
         {
           date: new Date().toString(),

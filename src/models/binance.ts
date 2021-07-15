@@ -27,6 +27,7 @@ export interface NewOrderResponse {
   timeInForce: string;
   side: string;
   type: string;
+  fills: any[];
 }
 
 export interface AccountInfoResponse {

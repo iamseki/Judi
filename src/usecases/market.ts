@@ -1,4 +1,4 @@
-import { BinanceProxy } from '../proxies';
+import { BinanceProxy } from '../proxies/binance';
 
 export class Market {
   constructor(private readonly proxy: BinanceProxy) {}

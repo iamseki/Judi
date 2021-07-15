@@ -1,7 +1,7 @@
 import axios, { Method } from 'axios';
 import querystring from 'querystring';
 import crypto from 'crypto';
-import { AccountInfoResponse, DepthResponse, NewOrderRequest, NewOrderResponse } from './binance-dtos';
+import { AccountInfoResponse, DepthResponse, NewOrderRequest, NewOrderResponse } from '../models/binance';
 
 export class BinanceProxy {
   constructor(private readonly apiKey: string, private readonly apiSecret: string, private readonly apiUrl: string) {}
