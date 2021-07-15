@@ -12,6 +12,7 @@ console.log(chalk.bgCyanBright.bold(`NODE_ENV:${process.env.NODE_ENV}`));
 
 const binanceProxy = Factory.Proxy();
 const binanceListener = Factory.MarketListener();
+
 const accountInfo = new AccountInfo(binanceProxy);
 const order = new Order(binanceProxy);
 
