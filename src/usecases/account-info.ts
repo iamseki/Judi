@@ -6,8 +6,8 @@ export class AccountInfo implements AccountInfoHandler {
 
   async currencyAmount(currency: string): Promise<number> {
     const { balances } = await this.proxy.accountInfo();
-    const { free } = balances.find((b) => b.asset === currency);
-    return Number(free);
+    const coin = balances.find((b) => b.asset === currency);
+    return Number(coin?.free ?? '0');
   }
 
   async balance(): Promise<Balance[]> {
@@ -18,6 +18,6 @@ export class AccountInfo implements AccountInfoHandler {
   async sellQuantityAvailable(asset: string, percent: number): Promise<number> {
     const balance = await this.balance();
     const coin = balance.find((coin) => coin.symbol === asset);
-    return Number((Number(coin.free) * percent).toFixed(6));
+    return Number((Number(coin?.free ?? '0') * percent).toFixed(6));
   }
 }

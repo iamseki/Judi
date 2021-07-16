@@ -4,6 +4,10 @@ module.exports = {
         '<rootDir>/src/**/*.ts',
         '!<rootDir>/src/main/**'
     ],
+    coveragePathIgnorePatterns: [
+        "<rootDir>/test/fixtures",
+        "<rootDir>/src/proxies",
+    ],
     coverageDirectory: 'coverage',
     coverageProvider: 'babel',
     testEnvironment: 'node',
