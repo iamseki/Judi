@@ -1,6 +1,6 @@
 import { fakeBinanceProxy } from '../fixtures/binance-proxy';
 import { Order } from '../../src/usecases';
-import { Side, Status } from '../../src/models/order';
+import { Side, Status, Type } from '../../src/models/order';
 
 /*
  ** the symbol and quantity its hard coded in fake proxy response so keep that in mind
@@ -29,5 +29,17 @@ describe('order - Use Case', () => {
     expect(result.currency).toBe('29.0652');
     expect(result.fills[0].exchangeComission).toBe('0.0290652');
     expect(result.fills[0].symbol).toBe('USDT');
+  });
+
+  it('should execute a test order', async () => {
+    const order = new Order(fakeBinanceProxy);
+    const result = await order.test('BTCUSDT', 0.000914);
+
+    // test order has always side = buy
+    expect(result.side).toBe(Side.BUY);
+    expect(result.type).toBe(Type.MARKET);
+    expect(result.currency).toBe('29.0652');
+    expect(result.fills[0].exchangeComission).toBe('0.00000091');
+    expect(result.fills[0].symbol).toBe('BTC');
   });
 });

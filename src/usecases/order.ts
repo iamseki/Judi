@@ -5,14 +5,14 @@ import { BinanceProxy } from '../proxies/binance';
 export class Order {
   constructor(private readonly proxy: BinanceProxy) {}
 
-  async test(symbol: string, quantity: number): Promise<any> {
+  async test(symbol: string, quantity: number): Promise<OrderResult> {
     const result = await this.proxy.newOrderTest({
       side: 'BUY',
       type: 'MARKET',
       quantity,
       symbol,
     });
-    return result;
+    return this.mappingOrderResultFromBinance(result);
   }
 
   async buy(symbol: string, quantity: number): Promise<OrderResult> {

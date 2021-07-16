@@ -86,5 +86,6 @@ jest
   .mockImplementation((data) =>
     data.side === 'BUY' ? Promise.resolve(buyOrderResponse) : Promise.resolve(sellOrderResponse),
   );
+jest.spyOn(fakeBinanceProxy, 'newOrderTest').mockReturnValue(Promise.resolve(buyOrderResponse));
 
 export { fakeBinanceProxy };
