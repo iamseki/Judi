@@ -44,7 +44,7 @@ const buyOrderResponse: NewOrderResponse = {
     {
       price: '31800.00',
       qty: '0.00091400',
-      // qty * price * fee , fee = 0,001
+      // qty * price * fee , binance fee = 0,001
       commission: '0.00000091',
       commissionAsset: 'BTC',
       tradeId: 7129774,
@@ -70,7 +70,7 @@ const sellOrderResponse: NewOrderResponse = {
     {
       price: '31800.00',
       qty: '0.0009140',
-      // qty * fee , fee = 0,001
+      // qty * fee , binance fee = 0,001
       commission: '0.0290652',
       commissionAsset: 'USDT',
       tradeId: 7129777,
