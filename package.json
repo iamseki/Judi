@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev src/index.ts --respawn",
+    "start": "node dist",
     "debug": "npm run dev -- --inspect",
     "lint": "eslint \"src/**\" --fix && prettier \"src/**\" --write",
     "build": "tsc",

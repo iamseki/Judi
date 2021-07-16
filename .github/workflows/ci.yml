@@ -2,8 +2,9 @@ name: CI
 
 on:
   push:
-    branches:
-      - "*"
+    paths:
+      - "src/**"
+      - "tests/**"
 
 jobs:
   test-node:
