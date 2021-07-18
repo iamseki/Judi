@@ -8,9 +8,9 @@ export interface OrderResult {
   symbol: string;
   orderId: number;
   timestamp: number;
-  status: string;
-  type: string;
-  side: Side;
+  status: OrderStatus;
+  type: OrderType;
+  side: OrderSide;
   currency: string;
   fills: FilledOrder[];
   executedQuantity: string;
@@ -24,16 +24,16 @@ export interface FilledOrder {
   exchangeComission: string;
 }
 
-export enum Side {
+export enum OrderSide {
   SELL = 'sell',
   BUY = 'buy',
 }
 
-export enum Status {
+export enum OrderStatus {
   FILLED = 'filled',
   EXPIRED = 'expired',
 }
 
-export enum Type {
+export enum OrderType {
   MARKET = 'market',
 }

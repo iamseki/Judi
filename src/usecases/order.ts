@@ -1,5 +1,5 @@
 import { NewOrderResponse } from '../models/binance';
-import { OrderResult, Side, Status, Type } from '../models/order';
+import { OrderResult, OrderSide, OrderStatus, OrderType } from '../models/order';
 import { BinanceProxy } from '../proxies/binance';
 
 export class Order {
@@ -43,9 +43,9 @@ export class Order {
       executedQuantity: result.executedQty,
       currency: result.cummulativeQuoteQty,
       requestedQuantity: result.origQty,
-      status: Status[result.status],
-      side: Side[result.side],
-      type: Type[result.type],
+      status: OrderStatus[result.status],
+      side: OrderSide[result.side],
+      type: OrderType[result.type],
       fills: result.fills.map((f) => ({
         price: f.price,
         symbol: f.commissionAsset,
