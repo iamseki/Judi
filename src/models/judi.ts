@@ -3,6 +3,8 @@ export enum JudiInitialState {
   Buy = 'buy',
   Sell = 'sell',
   Judi = 'judi',
+  OperateMyMoney = 'operate-my-money',
+  SymbolPrice = 'symbol-price',
 }
 
 export enum JudiState {
@@ -15,6 +17,10 @@ export enum JudiState {
   HandleSell = 'handle-sell',
   HandleSellSuccess = 'handle-sell-success',
   ProcessingOrder = 'processing-order',
+  SymbolPriceSuccess = 'symbol-price-success',
+  SymbolPriceFailed = 'symbol-price-failed',
+  IntentionToBuy = 'intention-to-buy',
+  IntentionToSell = 'intention-to-sell',
 }
 
 export enum JudiEvents {

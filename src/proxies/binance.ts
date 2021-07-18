@@ -2,6 +2,7 @@ import axios, { Method } from 'axios';
 import querystring from 'querystring';
 import crypto from 'crypto';
 import { AccountInfoResponse, DepthResponse, NewOrderRequest, NewOrderResponse } from '../models/binance';
+import { Ticker } from '../models/market';
 
 export class BinanceProxy {
   constructor(private readonly apiKey: string, private readonly apiSecret: string, private readonly apiUrl: string) {}
@@ -30,6 +31,14 @@ export class BinanceProxy {
 
   async accountInfo(): Promise<AccountInfoResponse> {
     return this.privateCall('/v3/account');
+  }
+
+  async tickerCurrentPrice(symbol: string): Promise<Ticker> {
+    return this.publicCall('/v3/ticker/price', { symbol });
+  }
+
+  async allTickersCurrentPrice(): Promise<Ticker[]> {
+    return this.publicCall('/v3/ticker/price');
   }
 
   private async privateCall<T>(path: string, data = {}, method = 'GET'): Promise<T> {

@@ -1,7 +1,7 @@
 export interface OrderHandler {
-  test(symbol: string, quantity: number): Promise<any>;
-  buy(symbol: string, quantity: number): Promise<any>;
-  sell(symbol: string, quantity: number): Promise<any>;
+  test(symbol: string, quantity: number): Promise<OrderResult>;
+  buy(symbol: string, quantity: number): Promise<OrderResult>;
+  sell(symbol: string, quantity: number): Promise<OrderResult>;
 }
 
 export interface OrderResult {
@@ -32,6 +32,8 @@ export enum OrderSide {
 export enum OrderStatus {
   FILLED = 'filled',
   EXPIRED = 'expired',
+  VOID = 'void',
+  NOT_ENOUGH_MONEY = 'not-enough-money',
 }
 
 export enum OrderType {

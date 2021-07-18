@@ -1,18 +1,23 @@
 import WebSocket from 'ws';
-import { Listener } from '../models/listener';
+import { Listener, ListenerOptions } from '../models/listener';
+import { OrderResult, OrderStatus } from '../models/order';
 
 export class BinanceListener implements Listener {
   constructor(private readonly socketUrl: string) {}
 
-  listenToMarket(handler: (symbolPrice: number) => Promise<boolean>): void {
+  listenToMarket(
+    orderHandler: (symbolPrice: number) => Promise<Partial<OrderResult>>,
+    options?: ListenerOptions,
+  ): void {
     const ws = new WebSocket(this.socketUrl);
 
     ws.on('message', async (data) => {
       const incomingData = JSON.parse(data.toString());
+      //incomingData.E // event timestamp
       if (incomingData.k && incomingData.k.x) {
         const symbolPrice = Number(incomingData.k.c);
-        const isDone = await handler(symbolPrice);
-        if (isDone) {
+        const orderResult = await orderHandler(symbolPrice);
+        if (OrderStatus[orderResult.status] === OrderStatus.FILLED && !options?.loop) {
           ws.terminate();
         }
       }

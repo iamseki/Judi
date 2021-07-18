@@ -1,3 +1,8 @@
+import { OrderResult } from './order';
+
+export interface ListenerOptions {
+  loop: boolean;
+}
 export interface Listener {
-  listenToMarket(handler: (symbolPrice: number) => Promise<boolean>): void;
+  listenToMarket(orderHandler: (symbolPrice: number) => Promise<Partial<OrderResult>>, options?: ListenerOptions): void;
 }

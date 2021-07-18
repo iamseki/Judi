@@ -5,7 +5,7 @@ import { JudiEvent, JudiEvents } from './models/judi';
 import { JudiStateMachine } from './mmi/judi';
 import { askInitialState } from './mmi/user';
 import { AccountInfo } from './usecases/account-info';
-import { Order } from './usecases';
+import { Market, Order } from './usecases';
 import { Factory } from './factory';
 
 console.log(chalk.bgCyanBright.bold(`NODE_ENV:${process.env.NODE_ENV}`));
@@ -15,11 +15,12 @@ const binanceListener = Factory.MarketListener();
 
 const accountInfo = new AccountInfo(binanceProxy);
 const order = new Order(binanceProxy);
+const market = new Market(binanceProxy);
 
 (async () => {
   const initialState = await askInitialState();
 
-  const judi = new JudiStateMachine(initialState, accountInfo, order, binanceListener);
+  const judi = new JudiStateMachine(initialState, accountInfo, order, market, binanceListener);
 
   judi.on(JudiEvents.Successed, (event: JudiEvent) => {
     const loggingFile = process.env.NODE_ENV === 'DEV' ? 'result-dev.json' : 'result.json';

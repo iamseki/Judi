@@ -1,3 +1,4 @@
+import { Ticker } from '../models/market';
 import { BinanceProxy } from '../proxies/binance';
 
 export class Market {
@@ -9,6 +10,14 @@ export class Market {
 
   async exchangeInfo(): Promise<any> {
     return this.proxy.exchangeInfo();
+  }
+
+  async tickerPrice(symbol?: string): Promise<Ticker> {
+    return this.proxy.tickerCurrentPrice(symbol);
+  }
+
+  async allTickersPrice(): Promise<Ticker[]> {
+    return this.proxy.allTickersCurrentPrice();
   }
 
   async symbolExchangeInfo(symbol: string): Promise<any> {
