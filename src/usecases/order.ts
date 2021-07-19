@@ -36,22 +36,24 @@ export class Order {
   }
 
   private mappingOrderResultFromBinance(result: NewOrderResponse): OrderResult {
-    return {
-      orderId: result.orderId,
-      timestamp: result.transactTime,
-      symbol: result.symbol,
-      executedQuantity: result.executedQty,
-      currency: result.cummulativeQuoteQty,
-      requestedQuantity: result.origQty,
-      status: OrderStatus[result.status],
-      side: OrderSide[result.side],
-      type: OrderType[result.type],
-      fills: result.fills.map((f) => ({
-        price: f.price,
-        symbol: f.commissionAsset,
-        exchangeComission: f.commission,
-        quantity: f.qty,
-      })),
-    };
+    return (
+      result && {
+        orderId: result.orderId,
+        timestamp: result.transactTime,
+        symbol: result.symbol,
+        executedQuantity: result.executedQty,
+        currency: result.cummulativeQuoteQty,
+        requestedQuantity: result.origQty,
+        status: OrderStatus[result.status],
+        side: OrderSide[result.side],
+        type: OrderType[result.type],
+        fills: result.fills.map((f) => ({
+          price: f.price,
+          symbol: f.commissionAsset,
+          exchangeComission: f.commission,
+          quantity: f.qty,
+        })),
+      }
+    );
   }
 }

@@ -25,17 +25,17 @@ export interface FilledOrder {
 }
 
 export enum OrderSide {
-  SELL = 'sell',
-  BUY = 'buy',
+  SELL = 'SELL',
+  BUY = 'BUY',
 }
 
 export enum OrderStatus {
-  FILLED = 'filled',
-  EXPIRED = 'expired',
-  VOID = 'void',
-  NOT_ENOUGH_MONEY = 'not-enough-money',
+  FILLED = 'FILLED',
+  EXPIRED = 'EXPIRED',
+  VOID = 'VOID',
+  NOT_ENOUGH_MONEY = 'NOT_ENOUGH_MONEY',
 }
 
 export enum OrderType {
-  MARKET = 'market',
+  MARKET = 'MARKET',
 }

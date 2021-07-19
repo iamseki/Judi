@@ -1,32 +1,32 @@
 export enum JudiInitialState {
-  AccountBalance = 'account-info',
-  Buy = 'buy',
-  Sell = 'sell',
-  Judi = 'judi',
-  OperateMyMoney = 'operate-my-money',
-  SymbolPrice = 'symbol-price',
+  ACCOUNT_BALANCE = 'ACCOUNT_BALANCE',
+  BUY = 'BUY',
+  SELL = 'SELL',
+  JUDI = 'JUDI',
+  OPERATE_MY_MONEY = 'OPERATE_MY_MONEY',
+  SYMBOL_PRICE = 'SYMBOL_PRICE',
 }
 
 export enum JudiState {
-  Initial = 'initial',
-  AccountBalanceSuccess = 'account-balance-success',
-  AccountBalanceFailed = 'account-balance-failed',
-  ListeningMarket = 'listening-market',
-  HandleBuy = 'handle-buy',
-  HandleBuySuccess = 'handle-buy-success',
-  HandleSell = 'handle-sell',
-  HandleSellSuccess = 'handle-sell-success',
-  ProcessingOrder = 'processing-order',
-  SymbolPriceSuccess = 'symbol-price-success',
-  SymbolPriceFailed = 'symbol-price-failed',
-  IntentionToBuy = 'intention-to-buy',
-  IntentionToSell = 'intention-to-sell',
+  INITIAL = 'INITIAL',
+  ACCOUNT_BALANCE_SUCCESS = 'ACCOUNT_BALANCE_SUCCESS',
+  ACCOUNT_BALANCE_FAILED = 'ACCOUNT_BALANCE_FAILED',
+  LISTENING_MARKET = 'LISTENING_MARKET',
+  HANDLE_BUY = 'HANDLE_BUY',
+  HANDLE_SELL = 'HANDLE_SELL',
+  HANDLE_BUY_SUCCESS = 'HANDLE_BUY_SUCCESS',
+  HANDLE_SELL_SUCCESS = 'HANDLE_SELL_SUCCESS',
+  PROCESSING_ORDER = 'PROCESSING_ORDER',
+  SYMBOL_PRICE_SUCCESS = 'SYMBOL_PRICE_SUCCESS',
+  SYMBOL_PRICE_FAILED = 'SYMBOL_PRICE_FAILED',
+  INTENTION_TO_BUY = 'INTENTION_TO_BUY',
+  INTENTION_TO_SELL = 'INTENTION_TO_SELL',
 }
 
 export enum JudiEvents {
-  Successed = 'success',
-  Failed = 'failure',
-  Processing = 'processing',
+  SUCCESS = 'SUCCESS',
+  FAILURE = 'FAILURE',
+  PROCESSING = 'PROCESSING',
 }
 
 export interface JudiEvent {

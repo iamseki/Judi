@@ -22,7 +22,7 @@ const market = new Market(binanceProxy);
 
   const judi = new JudiStateMachine(initialState, accountInfo, order, market, binanceListener);
 
-  judi.on(JudiEvents.Successed, (event: JudiEvent) => {
+  judi.on(JudiEvents.SUCCESS, (event: JudiEvent) => {
     const loggingFile = process.env.NODE_ENV === 'DEV' ? 'result-dev.json' : 'result.json';
     fs.appendFileSync(
       loggingFile,
@@ -38,11 +38,11 @@ const market = new Market(binanceProxy);
     console.log(chalk.greenBright(JSON.stringify(event, null, 2)));
   });
 
-  judi.on(JudiEvents.Failed, (event: JudiEvent) => {
+  judi.on(JudiEvents.FAILURE, (event: JudiEvent) => {
     console.log(chalk.redBright(JSON.stringify(event, null, 2)));
   });
 
-  judi.on(JudiEvents.Processing, (event: JudiEvent) => {
+  judi.on(JudiEvents.PROCESSING, (event: JudiEvent) => {
     console.log(chalk.blue(JSON.stringify(event, null, 2)));
   });
 

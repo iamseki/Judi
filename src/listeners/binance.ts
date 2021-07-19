@@ -3,6 +3,8 @@ import { Listener, ListenerOptions } from '../models/listener';
 import { OrderResult, OrderStatus } from '../models/order';
 
 export class BinanceListener implements Listener {
+  private incomingClosedPriceTimestamp: number;
+
   constructor(private readonly socketUrl: string) {}
 
   listenToMarket(
@@ -14,7 +16,8 @@ export class BinanceListener implements Listener {
     ws.on('message', async (data) => {
       const incomingData = JSON.parse(data.toString());
       //incomingData.E // event timestamp
-      if (incomingData.k && incomingData.k.x) {
+      if (incomingData.k && incomingData.k.x && incomingData.E !== this.incomingClosedPriceTimestamp) {
+        this.incomingClosedPriceTimestamp = incomingData.E;
         const symbolPrice = Number(incomingData.k.c);
         const orderResult = await orderHandler(symbolPrice);
         if (OrderStatus[orderResult.status] === OrderStatus.FILLED && !options?.loop) {

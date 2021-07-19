@@ -1,8 +1,7 @@
 dist
 node_modules
-init.sh
-init.bat
+init.*
 coverage
 result-dev.json
 result.json
-dev.sh
+dev.*
