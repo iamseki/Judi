@@ -34,3 +34,9 @@ export interface JudiEvent {
   state: JudiState;
   data: any;
 }
+
+export interface JudiConfig {
+  symbol?: string;
+  goodBuy?: number;
+  goodSell?: number;
+}

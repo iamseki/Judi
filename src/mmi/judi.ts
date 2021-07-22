@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { JudiState, JudiInitialState, JudiEvents, JudiEvent } from '../models/judi';
+import { JudiState, JudiInitialState, JudiEvents, JudiEvent, JudiConfig } from '../models/judi';
 import { AccountInfoHandler } from '../models/account-info';
 import { OrderHandler, OrderResult, OrderStatus } from '../models/order';
 import { MarketHandler } from '../models/market';
@@ -25,8 +25,12 @@ export class JudiStateMachine extends EventEmitter {
     private readonly order: OrderHandler,
     private readonly market: MarketHandler,
     private readonly marketListener: Listener,
+    private readonly config?: JudiConfig,
   ) {
     super();
+    for (const key in config) {
+      this[key] = config[key];
+    }
   }
 
   public async start(): Promise<void> {

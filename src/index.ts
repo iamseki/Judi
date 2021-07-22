@@ -18,9 +18,9 @@ const order = new Order(binanceProxy);
 const market = new Market(binanceProxy);
 
 (async () => {
-  const initialState = await askInitialState();
+  const { initialState, ...config } = await askInitialState();
 
-  const judi = new JudiStateMachine(initialState, accountInfo, order, market, binanceListener);
+  const judi = new JudiStateMachine(initialState, accountInfo, order, market, binanceListener, config);
 
   judi.on(JudiEvents.SUCCESS, (event: JudiEvent) => {
     const loggingFile = process.env.NODE_ENV === 'DEV' ? 'result-dev.json' : 'result.json';
