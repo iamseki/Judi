@@ -27,6 +27,7 @@ export enum JudiEvents {
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE',
   PROCESSING = 'PROCESSING',
+  PROCESS_END = 'PROCESS_END',
 }
 
 export interface JudiEvent {

@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import { BinanceListener } from './listeners/binance';
 import { Listener } from './models/listener';
 import { BinanceProxy } from './proxies/binance';
@@ -17,6 +18,7 @@ export class Factory {
     const symbol = process.env.SYMBOL;
     const listenerUrl = `${websocketUrl}/${symbol.toLowerCase()}@kline_1m`;
 
-    return new BinanceListener(listenerUrl);
+    const e = new EventEmitter();
+    return new BinanceListener(listenerUrl, e);
   }
 }

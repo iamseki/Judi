@@ -17,7 +17,10 @@ const accountInfo = new AccountInfo(binanceProxy);
 const order = new Order(binanceProxy);
 const market = new Market(binanceProxy);
 
-(async () => {
+let processing = false;
+
+const run = async () => {
+  processing = true;
   const { initialState, ...config } = await askInitialState();
 
   const judi = new JudiStateMachine(initialState, accountInfo, order, market, binanceListener, config);
@@ -46,5 +49,13 @@ const market = new Market(binanceProxy);
     console.log(chalk.blue(JSON.stringify(event, null, 2)));
   });
 
+  judi.on(JudiEvents.PROCESS_END, () => (processing = false));
+
   await judi.start();
-})();
+};
+
+setInterval(async () => {
+  if (!processing) {
+    await run();
+  }
+}, 200);

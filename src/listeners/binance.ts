@@ -1,11 +1,12 @@
+import EventEmitter from 'events';
 import WebSocket from 'ws';
-import { Listener, ListenerOptions } from '../models/listener';
+import { Listener, ListenerEvents, ListenerOptions } from '../models/listener';
 import { OrderResult, OrderStatus } from '../models/order';
 
 export class BinanceListener implements Listener {
   private incomingClosedPriceTimestamp: number;
 
-  constructor(private readonly socketUrl: string) {}
+  constructor(private readonly socketUrl: string, public readonly eventEmitter: EventEmitter) {}
 
   listenToMarket(
     orderHandler: (symbolPrice: number) => Promise<Partial<OrderResult>>,
@@ -22,6 +23,7 @@ export class BinanceListener implements Listener {
         const orderResult = await orderHandler(symbolPrice);
         if (OrderStatus[orderResult.status] === OrderStatus.FILLED && !options?.loop) {
           ws.terminate();
+          this.eventEmitter.emit(ListenerEvents.JUDI_STOP_LISTENING);
         }
       }
     });

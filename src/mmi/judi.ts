@@ -3,7 +3,7 @@ import { JudiState, JudiInitialState, JudiEvents, JudiEvent, JudiConfig } from '
 import { AccountInfoHandler } from '../models/account-info';
 import { OrderHandler, OrderResult, OrderStatus } from '../models/order';
 import { MarketHandler } from '../models/market';
-import { Listener } from '../models/listener';
+import { Listener, ListenerEvents } from '../models/listener';
 import BigNumber from 'bignumber.js';
 
 export class JudiStateMachine extends EventEmitter {
@@ -28,9 +28,15 @@ export class JudiStateMachine extends EventEmitter {
     private readonly config?: JudiConfig,
   ) {
     super();
-    for (const key in config) {
-      this[key] = config[key];
+    // will override process.env variables, e.g (this.symbol, this.goodBuy and so on...)
+    for (const key in this.config) {
+      this[key] = this.config[key];
     }
+
+    this.marketListener.eventEmitter.on(ListenerEvents.JUDI_STOP_LISTENING, () => {
+      // propagates the event to user
+      this.emitJudiEvent(JudiEvents.PROCESS_END);
+    });
   }
 
   public async start(): Promise<void> {
@@ -40,6 +46,7 @@ export class JudiStateMachine extends EventEmitter {
           const balance = await this.accountInfo.balance();
           this.state = JudiState.ACCOUNT_BALANCE_SUCCESS;
           this.emitJudiEvent(JudiEvents.SUCCESS, { balance });
+          this.emitJudiEvent(JudiEvents.PROCESS_END);
           break;
         case JudiInitialState.BUY:
           this.state = JudiState.LISTENING_MARKET;
@@ -60,6 +67,7 @@ export class JudiStateMachine extends EventEmitter {
           const ticker = await this.market.tickerPrice(this.symbol);
           this.state = JudiState.SYMBOL_PRICE_SUCCESS;
           this.emitJudiEvent(JudiEvents.SUCCESS, { ticker });
+          this.emitJudiEvent(JudiEvents.PROCESS_END);
           break;
         default:
           console.log('default initial state');
