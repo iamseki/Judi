@@ -71,6 +71,7 @@ export class JudiStateMachine extends EventEmitter {
           break;
         default:
           console.log('default initial state');
+          this.emitJudiEvent(JudiEvents.PROCESS_END);
           break;
       }
     } catch (error) {
