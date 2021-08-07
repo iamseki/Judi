@@ -5,6 +5,7 @@ import { OrderHandler, OrderResult, OrderStatus } from '../models/order';
 import { MarketHandler } from '../models/market';
 import { Listener, ListenerEvents } from '../models/listener';
 import BigNumber from 'bignumber.js';
+import chalk from 'chalk';
 
 export class JudiStateMachine extends EventEmitter {
   private readonly symbol = process.env.SYMBOL;
@@ -71,8 +72,8 @@ export class JudiStateMachine extends EventEmitter {
           break;
         default:
           console.log('default initial state');
-          this.emitJudiEvent(JudiEvents.PROCESS_END);
-          break;
+          console.log('exiting...');
+          process.exit(0);
       }
     } catch (error) {
       this.emitJudiEvent(JudiEvents.FAILURE, { error });
